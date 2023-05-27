@@ -1,4 +1,4 @@
- // Fonction pour revenir en arrière
+
  function goBack() {
     $('#blog').html('</>')
     $.ajax({
@@ -10,7 +10,6 @@
   });
   }
 
-  // Chargement des articles du blog
   $.ajax({
     url: 'https://jsonplaceholder.typicode.com/posts',
     method: 'GET',
@@ -19,7 +18,6 @@
     }
   });
 
-  // Afficher les articles du blog
   function displayPosts(posts,hideAuthorName) {
     var blog = $('#blog');
 
@@ -29,13 +27,13 @@
 
       var title = $('<h2 class="titlePost"></h2>').text('Post '+(index + 1)+ ': '+post.title);
       var author = $('<p class="author"></p>').text('By');
-       // AJAX request to retrieve the user associated with the post
+       
        $.ajax({
         url: 'https://jsonplaceholder.typicode.com/users/' + post.userId,
         type: 'GET',
         success: function(user) {
           var listItem = $('<span> ' + user.name + '</span>');
-          listItem.attr('data-post', JSON.stringify(post)); // Store the post data as an attribute
+          listItem.attr('data-post', JSON.stringify(post));
 
           author.append(listItem);
         },
@@ -44,9 +42,7 @@
         }
       });
      
-      var body = $('<p></p>').text(post.body);
 
-      // Affichage des commentaires associés à l'article
       title.click(function () {
         $.ajax({
           url: 'https://jsonplaceholder.typicode.com/comments?postId=' + post.id,
@@ -57,7 +53,6 @@
         });
       });
 
-      // Affichage des informations de l'auteur
       author.click(function () {
         $.ajax({
           url: 'https://jsonplaceholder.typicode.com/users/' + post.userId,
@@ -78,7 +73,6 @@
     });
   }
 
-  // Afficher les commentaires
   function displayComments(comments, body) {
     var goBack = $('<p class="back" onclick="goBack()">Home</p>')
     var postElement = $('<div class="commentsPost"></div>');
@@ -90,8 +84,6 @@
     $.each(comments, function (index, comment) {
       var commentElement = $('<div class="comment"></div>');
 
-      //var name = $('<p></p>').text('Name: ' + comment.name);
-      //var email = $('<p></p>').text('Email: ' + comment.email);
       var body = $('<p></p>').text('Comment: ' + comment.body);
 
       commentElement.append( body);
@@ -101,7 +93,6 @@
     $('#blog').html(postElement);
   }
 
-  // Afficher les informations de l'auteur
   function displayAuthorInfo(user) {
     var goBack = $('<p class="back" onclick="goBack()">Home</p>')
     var postElement = $('<div class="authorCard"></div>');
@@ -116,8 +107,6 @@
     var email = $('<p class="detail"></p>').text('Email: ' + user.email);
     var website = $('<p class="detail"></p>').text('Website: ' + user.website);
 
-    // Afficher les articles de l'auteur
-    //username.click(function () {
     $.ajax({
       url: 'https://jsonplaceholder.typicode.com/posts?userId=' + user.id,
       method: 'GET',
@@ -125,7 +114,7 @@
         displayPosts(posts,true);
       }
     });
-    // });
+
     username.append(userIcon);
     email.append(emailIcon);
     website.append(linkIcon);
